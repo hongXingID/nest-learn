@@ -3,7 +3,8 @@ import rateLimit from 'express-rate-limit';
 import * as compression from 'compression';
 import * as helmet from 'helmet';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
-
+import { TransformInterceptor } from './interceptors/transform.interceptor';
+import { HttpExceptionFilter } from './filters/http-exception.filter';
 import { AppModule } from './app.module';
 import * as bodyParser from 'body-parser';
 
@@ -20,7 +21,8 @@ async function bootstrap() {
   );
   app.use(compression()); // 启用 gzip 压缩
   app.use(helmet.xssFilter()); //安全中间件
-
+  app.useGlobalInterceptors(new TransformInterceptor()); // 正常情况下，响应值统一
+  app.useGlobalFilters(new HttpExceptionFilter()); // 异常情况下，响应值统一
   app.use(bodyParser.json({ limit: '10mb' })); // 修改请求的容量
   app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
