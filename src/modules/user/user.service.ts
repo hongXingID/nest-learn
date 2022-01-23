@@ -21,6 +21,36 @@ export class UserService {
   }
 
   /**
+   * 查找所有用户
+   * @param queryParams 参数
+   * @returns 
+   */
+  async findAll(queryParams): Promise<[User[], number]> {
+    const query = this.userRepository.createQueryBuilder('user').orderBy('user.createAt', 'DESC');
+
+    if (typeof queryParams === 'object') {
+      const { page = 1, pageSize = 12, status, ...otherParams } = queryParams;
+
+      query.skip((+page - 1) * +pageSize);
+      query.take(+pageSize);
+
+      if (status) {
+        query.andWhere('user.status=:status').setParameter('status', status);
+      }
+
+      if (otherParams) {
+        Object.keys(otherParams).forEach((key) => {
+          query
+            .andWhere(`user.${key} LIKE :${key}`)
+            .setParameter(`${key}`, `%${otherParams[key]}%`);
+        });
+      }
+    }
+
+    return query.getManyAndCount();
+  }
+
+  /**
   * 创建用户
   * @param user
   */
