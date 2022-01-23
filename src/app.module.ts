@@ -9,6 +9,51 @@ import { AuthModule } from './modules/auth/auth.module'
 import { UserModule } from './modules/user/user.module';
 import { User } from './modules/user/user.entity';
 
+// 文件模块
+import { FileModule } from './modules/file/file.module'
+import { File } from './modules/file/file.entity'
+
+// 文章模块
+import { ArticleModule } from './modules/article/article.module';
+import { Article } from './modules/article/article.entity';
+
+// 分类模块
+import { CategoryModule } from './modules/category/category.module';
+import { Category } from './modules/category/category.entity';
+
+// 标签模块
+import { TagModule } from './modules/tag/tag.module';
+import { Tag } from './modules/tag/tag.entity';
+
+// 评论模块
+import { CommentModule } from './modules/comment/comment.module';
+import { Comment } from './modules/comment/comment.entity';
+
+// 系统模块
+import { SettingModule } from './modules/setting/setting.module';
+import { Setting } from './modules/setting/setting.entity';
+
+// 邮件模块
+import { SMTPModule } from './modules/smtp/smtp.module';
+import { SMTP } from './modules/smtp/smtp.entity';
+
+// 页面模块
+import { PageModule } from './modules/page/page.module';
+import { Page } from './modules/page/page.entity';
+
+// 访问统计模块
+import { ViewModule } from './modules/view/view.module';
+import { View } from './modules/view/view.entity';
+
+// 搜索模块
+import { SearchModule } from './modules/search/search.module';
+import { Search } from './modules/search/search.entity';
+
+// 海报模块
+import { PosterModule } from './modules/poster/poster.module';
+import { Poster } from './modules/poster/poster.entity';
+
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -19,6 +64,17 @@ import { User } from './modules/user/user.entity';
         type: 'mysql',
         entities: [
           User,
+          File,
+          Article,
+          Category,
+          Tag,
+          Comment,
+          Setting,
+          SMTP,
+          Page,
+          View,
+          Search,
+          Poster
         ],
         host: configService.get('DB_HOST', '119.91.147.56'),
         port: configService.get<number>('DB_PORT', 3306),
@@ -30,8 +86,19 @@ import { User } from './modules/user/user.entity';
         synchronize: true,
       }),
     }),
+    AuthModule,
     UserModule,
-    AuthModule
+    FileModule,
+    ArticleModule,
+    CategoryModule,
+    TagModule,
+    CommentModule,
+    SettingModule,
+    SMTPModule,
+    PageModule,
+    ViewModule,
+    SearchModule,
+    PosterModule
   ],
   controllers: [],
   providers: [],
