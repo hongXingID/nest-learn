@@ -29,13 +29,15 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   async login(@Body() user) {
     const res = await this.authService.login(user);
-    return res;
+    const { id, name, avatar, email, role, status, type, token } = res
+    return { id, name, avatar, email, role, status, type, token }
   }
 
   @Post('admin')
   @Roles('admin')
   @UseGuards(JwtAuthGuard)
   createBook() {
+    console.log()
     return this.authService.checkAdmin();
   }
 
